@@ -1,0 +1,24 @@
+	
+abstract class Report (father)
+
+USER INPUT
+privet string SourceType get set only (Drone,Soldier,Radar, Signal)
+privet DateTime Timestamp get set לא לפני 2020-01-01 ולא בעתיד
+privet Double Latitude get set 33.5–29.5000000
+privet Double Longitude get set 36.0–34.0000000
+privet string Description get set 10–500 תווים
+
+
+AUTO 
+
+privet static int ReportId = 0 
+privet static string Status get set
+privet static string Priority
+privet static string Classification
+privet static int ReliabilityScore
+privet static string RejectionReason
+
+class Drone : Report
+
+privet int Altitude 10000–100
+privet int ImageQuality
