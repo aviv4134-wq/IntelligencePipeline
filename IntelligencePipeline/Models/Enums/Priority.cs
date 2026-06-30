@@ -4,7 +4,11 @@ using System.Text;
 
 namespace IntelligencePipeline.Models.Enums
 {
-    internal class Priority
+    public enum Priority
     {
+        Low,
+        Medium,
+        High,
+        Critical
     }
 }

@@ -6,9 +6,6 @@ namespace IntelligencePipeline.Pipeline
 {
     internal class ReportPipeline
     {
-        static void Main()
-        {
-            Console.WriteLine("fds");
-        }
+        
     }
 }

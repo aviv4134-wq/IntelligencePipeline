@@ -4,7 +4,11 @@ using System.Text;
 
 namespace IntelligencePipeline.Models.Enums
 {
-    internal class Classification
+    public enum Classification
     {
+        Unclassified,
+        Restricted,
+        Secret,
+        TopSecret
     }
 }
