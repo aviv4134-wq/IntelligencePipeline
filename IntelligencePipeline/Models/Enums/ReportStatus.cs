@@ -4,7 +4,13 @@ using System.Text;
 
 namespace IntelligencePipeline.Models.Enums
 {
-    internal class ReportStatus
+    public enum ReportStatus
     {
+        New,
+        Validating,
+        Validated,
+        Rejected,
+        InProgress,
+        Completed
     }
 }
