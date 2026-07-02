@@ -2,6 +2,7 @@
 using IntelligencePipeline.Models.Reports;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -14,51 +15,57 @@ namespace IntelligencePipeline.Calculators
             //take decision in if 
             //megic num
 
-            string[] wordsChecK = ["missile", "explosion", "attack", "fire"];
+            string[] criticalWords = ["missile", "explosion", "attack", "fire"];
+            string[] highWords = ["weapon", "suspicious", "border"];
+            string[] mediumWords = ["movement", "vehicle", "activity"];
             string description = report.Description;
             
 
-            if (report is SignalReport siganlReport)
+            if (report is SignalReport signalReport)
             {
-                string contnet = siganlReport.Content;
-                if (ContainsKeyword(contnet, wordsChecK)) return Priority.Critical; 
+                string content = signalReport.Content;
+                if (ContainsKeyword(content, criticalWords)) return Priority.Critical; 
             }
 
             else if (report is RadarReport radarReport)
             {
                 if (radarReport.Speed >= 800) return Priority.Critical;
-                else if (radarReport.Speed >= 400) return Priority.High;
-                else if (radarReport.Speed >= 120) return Priority.Medium;
-
+               
             }
 
-            else if (ContainsKeyword(description, wordsChecK)) return Priority.Critical;
+            else if (ContainsKeyword(description, criticalWords)) return Priority.Critical;
 
             
-            if (ContainsKeyword(description, ["weapon", "suspicious", "border"])) return Priority.High;
+            if (ContainsKeyword(description, highWords)) return Priority.High;
 
             else if (report is DroneReport dronReport && dronReport.Altitude < 500) return Priority.High;
 
-            else if (report is SoldierReport soldierReport)
-            {
-                if (ContainsKeyword(description, ["movement"]) && soldierReport.ConfidenceLevel >= 4) return Priority.High;
-            }
+            else if (report is RadarReport radarReport && radarReport.Speed >= 400) return Priority.High;
 
+            else if (report is SoldierReport soldierReport &&
+            ContainsKeyword(description, ["weapon"]) &&
+            soldierReport.ConfidenceLevel >= 4)
+                    return Priority.High;
             
-            if (ContainsKeyword(description, ["movement", "vehicle", "activity"])) return Priority.Medium;
+            
+            if (ContainsKeyword(description, mediumWords)) return Priority.Medium;
             else if (report.ReliabilityScore >= 7) return Priority.Medium;
-
+            else if (report is RadarReport radarReport && radarReport.Speed >= 120) return Priority.Medium;
+            
             return Priority.Low;
 
         }
 
-        private bool ContainsKeyword(string text, params string[] keywords)
+        public bool ContainsKeyword(string text, params string[] keywords)
         {
-            foreach (string word in keywords)
-            {
-                if (text.Contains(word)) return true;
+            char[] charToSplit = { ',', '.', '?', '!', ':', ';', ' ' };
 
+            string[] arryText = text.Split(charToSplit, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string word in arryText)
+            {
+                if (keywords.Contains(word.ToLower())) return true;
             }
+
             return false;
 
         }

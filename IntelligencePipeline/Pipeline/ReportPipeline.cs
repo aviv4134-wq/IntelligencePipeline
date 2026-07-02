@@ -16,10 +16,12 @@ namespace IntelligencePipeline.Pipeline
         private RejectedReportRepository _rejectedReports;
         private int _nextReportId;
 
-        //public  ReportPipeline()
-        //{
-            
-        //}
+        public ReportPipeline()
+        {
+            _validatedReports = GetValidatedReports();
+            _rejectedReports = GetRejectedReports();
+            _nextReportId = 0;
+        }
 
         public void ProcessReport(Report report)
         {
@@ -39,34 +41,38 @@ namespace IntelligencePipeline.Pipeline
                 PriorityCalculator calculatePriority = new PriorityCalculator();
                 Priority priorityResult = calculatePriority.Calculate(report);
                 report.Priority = priorityResult;
+
+                ClassificationCalculator classificationCalculator  = new ClassificationCalculator();
+                Classification classificationResult = classificationCalculator.Calculate(report);
+                report.Classification = classificationResult;
+
                 
-                //ClassificationCalculator.Calculate();
-                //store in
             }
             else
             {
               report.Status = ReportStatus.Rejected;
               report.RejectionReason = valdiationResoult.ErrorMessage;
-              //stroe in rjected 
+              
             }
             string reportInfo = report.ToString();
             Console.WriteLine(reportInfo);
         }
-        //public ReportRepository GetValidatedReports()
-        //{
-
-        //}
-        //public RejectedReportRepository GetRejectedReports()
-        //{
-
-        //}
+        public ReportRepository GetValidatedReports()
+        {
+            return new ReportRepository();
+        }
+        public RejectedReportRepository GetRejectedReports()
+        {
+           return new RejectedReportRepository ();
+        }
         public void DisplayStatistics()
         {
+
 
         }
        
 
-           private IValidator GetValidator(Report report)
+           private IValidator? GetValidator(Report report)
         {
             string reportType = report.GetSourceType();
 
@@ -85,20 +91,20 @@ namespace IntelligencePipeline.Pipeline
                 //    return new RadarValidator();
 
                 default:
-            
-                    throw new ArgumentException($"Unknown report type: {reportType}");
+
+                    return null;
                     
             }
         }
 
 
     
-            
-            
-
         
         private void ValidateReport(Report report)
         {
+            IValidator reportValidation = GetValidator(report);
+
+            ValidationResult valdiationResoult = reportValidation.Validate(report);
 
         }
         private void CalculateMetrics(Report report)
@@ -107,7 +113,10 @@ namespace IntelligencePipeline.Pipeline
         }
         private void StoreReport(Report report)
         {
-
+            if (report.Status == ReportStatus.Rejected)
+                _rejectedReports.Add(report);
+            else
+                _validatedReports.Add(report);
         }
 
     }
