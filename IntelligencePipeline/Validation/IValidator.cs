@@ -1,10 +1,13 @@
-﻿using System;
+﻿using IntelligencePipeline.Models.Reports;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace IntelligencePipeline.Validation
 {
-    internal interface IValidator
+    interface IValidator
     {
+        ValidationResult Validate(Report report);
+        
     }
 }

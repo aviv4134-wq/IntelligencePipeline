@@ -55,7 +55,7 @@ namespace IntelligencePipeline.Models.Reports
             int lowSignalStrength = -100;
             if (baseGrade < lowSignalStrength) baseGrade -= 2;
 
-            if (baseGrade > 10) baseGrade = 10;
+            
             return baseGrade;
         }
 

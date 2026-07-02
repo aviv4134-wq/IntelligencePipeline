@@ -37,7 +37,7 @@ namespace IntelligencePipeline.Models.Reports
             Latitude = latitude;
             Longitude = longitude;
             Description = description;
-            Status = ReportStatus.New;
+            
         }
 
         public abstract string GetSourceType();

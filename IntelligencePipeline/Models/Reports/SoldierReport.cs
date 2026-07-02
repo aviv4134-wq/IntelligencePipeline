@@ -40,8 +40,8 @@ namespace IntelligencePipeline.Models.Reports
                 string cleanWord = description[index].Trim(chaerToTrim);
                 if (Enum.TryParse(cleanWord, true, out descriptionWords _))
                 {
-                    flag = false;
                     baseGrade += 1;
+                    flag = false;
                 }
             }
             return baseGrade;
