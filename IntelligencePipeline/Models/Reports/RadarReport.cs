@@ -44,6 +44,16 @@ namespace IntelligencePipeline.Models.Reports
 
             return baseGrade;
         }
+        public override string GetSummary()
+        {
+            return $"""
+                {base.GetSummary}
+                Speed : {Speed}
+                Direction : {Direction}
+                Distance : {Distance}
+                """;
+        }
+
 
     }
 }

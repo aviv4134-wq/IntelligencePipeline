@@ -47,7 +47,16 @@ namespace IntelligencePipeline.Models.Reports
             return baseGrade;
         }
 
-
+        public override string GetSummary()
+        {
+            return $"""
+                {base.GetSummary()}
+                SoldierID : {SoldierID}
+                SoldierID: {SoldierID}
+                Unit : {Unit}
+                ConfidenceLevel : {ConfidenceLevel}
+                """;
+        }
 
 
     }

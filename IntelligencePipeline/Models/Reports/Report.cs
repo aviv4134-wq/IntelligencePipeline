@@ -5,7 +5,7 @@ using System.Text;
 
 namespace IntelligencePipeline.Models.Reports
 {
-    abstract class Report
+    abstract class Report 
     {
         private  int _reportId ;
         private DateTime _timestamp;
@@ -29,6 +29,8 @@ namespace IntelligencePipeline.Models.Reports
         public int ReliabilityScore { get => _reliabilityScore; set { _reliabilityScore = value; } }
         public string RejectionReason { get => _rejectionReason; set { _rejectionReason = value; } }
 
+        public static string SortByField = "date";
+
 
         protected Report(int reportId, DateTime timestamp, double latitude,double longitude, string description)
         {
@@ -37,30 +39,62 @@ namespace IntelligencePipeline.Models.Reports
             Latitude = latitude;
             Longitude = longitude;
             Description = description;
+            Status = ReportStatus.New;
+            Priority = Priority.Low;
+            Classification = Classification.Unclassified;
             
         }
 
         public abstract string GetSourceType();
         public abstract int CalculateReliabilityScore();
 
+        
+        //public int CompareTo(Report other)
+        //{
+        //    if (other == null) return 1;
+        //    switch (SortByField)
+        //    {
+        //        case "timeStemp":
+                    
+        //        return this.Timestamp.CompareTo(other.Timestamp);
+                    
+
+        //        case "priority":
+                    
+        //            return this.Priority.CompareTo(other.Timestamp);
+
+        //        case "classification":
+
+        //            return this.Classification.CompareTo(other.Classification);
+
+        //        default:
+        //            return this.Timestamp.CompareTo(other.Timestamp);
+
+        //    }
+            
+        //}
+
+        
+
+
         public virtual string GetSummary()
         {
-            return "";
+            return $"id : {ReportId}\ntype : {GetSourceType()}\nstatus : {Status}";
         }
 
         public override string ToString()
             =>
             $"""
-            report id : {ReportId}
+            {GetSummary()}
             timestamp : {Timestamp}
             latitude : {Latitude}
             longitude : {Longitude}
             description : {Description}
-            status : {Status}
             priority : {Priority}
             classification : {Classification}
             reliabilityScore : {ReliabilityScore}
             rejectionReason : {RejectionReason}
+            
             """;
 
     }

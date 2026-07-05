@@ -12,7 +12,6 @@ namespace IntelligencePipeline.Storage
     {
         private List<Report> _reports;
 
-        
 
         public ReportRepository()
         {
@@ -35,7 +34,7 @@ namespace IntelligencePipeline.Storage
             List<Report> reportsByStatus = new List<Report>();
             foreach (Report report in _reports)
             {
-                if (report.Status == status) _reports.Add(report); 
+                if (report.Status == status) reportsByStatus.Add(report); 
             }
             return reportsByStatus;
            
@@ -45,9 +44,8 @@ namespace IntelligencePipeline.Storage
         {
             List<Report> reportsBypriority = new List<Report>();
             foreach (Report report in _reports)
-            {
-                if (report.Priority == priority) _reports.Add(report);
-            }
+            if (report.Priority == priority) reportsBypriority.Add(report);
+            
             return reportsBypriority;
 
         }
@@ -57,7 +55,7 @@ namespace IntelligencePipeline.Storage
             List<Report> reportsByKeyword = new List<Report>();
             foreach (Report report in _reports)
             {
-                if (priorityCalculator.ContainsKeyword(report.Description, [keyword]) ) _reports.Add(report);
+                if (priorityCalculator.ContainsKeyword(report.Description, [keyword]) ) reportsByKeyword.Add(report);
             }
             return reportsByKeyword;
          }
@@ -74,7 +72,9 @@ namespace IntelligencePipeline.Storage
         public void UpdateStatus(int reportId, ReportStatus newStatus)
         {
            Report? report = GetById(reportId);
-           if (report != null) report.Status = newStatus;    
+            if (report != null) report.Status = newStatus;
+            
+            else Console.WriteLine($"error report not found by this id {reportId}");
         }
         
         public int GetTotalCount()
@@ -85,7 +85,13 @@ namespace IntelligencePipeline.Storage
         public int GetCountByStatus(ReportStatus status)
         {
            return GetByStatus(status).Count;
-        } 
+        }
+        public int GetCountByPriority(Priority priority)
+        {
+            return GetByPriority(priority).Count;
+        }
+
 
     }
 }
+

@@ -59,5 +59,16 @@ namespace IntelligencePipeline.Models.Reports
             return baseGrade;
         }
 
+        public override string GetSummary()
+        {
+            return $"""
+                {base.GetSummary()}
+                Frequency: {Frequency}
+                Content: {Content}
+                Language: {Language}
+                SignalStrength: {SignalStrength}
+                """;
+        }
+
     }
 }

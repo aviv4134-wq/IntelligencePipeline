@@ -35,8 +35,18 @@ namespace IntelligencePipeline.Models.Reports
             return baseGrade;
 
         }
-            
-        
+
+        public override string GetSummary()
+        {
+            return $"""
+                {base.GetSummary()}
+                Altitude : {Altitude}
+                ImageQuality : {ImageQuality}
+                """;
+        }
+
+
+
 
 
     }
